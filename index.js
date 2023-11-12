@@ -31,6 +31,7 @@
 
   let mousePos;
   let isClicking = false;
+  let dragStart = null;
   let isMouseOver = false;
   let newSize = 1;
 
@@ -113,17 +114,31 @@
     }
   });
 
+  
   addEventListener("mousemove", (e) => {
     if (isGameOver) return;
 
     const rect = canvas.getBoundingClientRect();
     mousePos = e.clientX / parent.style.zoom - rect.left;
+    
+    if (isClicking) {
+      dragStart = { x: mousePos, y: ball.position.y };
+    } else {
+      dragStart = null;
+    }
   });
+  
   addEventListener("touchmove", (e) => {
     if (isGameOver) return;
 
     const rect = canvas.getBoundingClientRect();
     mousePos = e.touches[0].clientX / parent.style.zoom - rect.left;
+
+    if (isClicking) {
+      dragStart = { x: mousePos, y: ball.position.y };
+    } else {
+      dragStart = null;
+    }
   });
 
   addEventListener("click", () => {
@@ -259,6 +274,15 @@
         ctx.moveTo(0, 100);
         ctx.lineTo(480, 100);
         ctx.stroke();
+      }
+
+      if (dragStart) {
+        ctx.setLineDash([5, 15]); // Set the style for a dotted line
+        ctx.beginPath();
+        ctx.moveTo(dragStart.x, dragStart.y);
+        ctx.lineTo(dragStart.x, ground.position.y); // Line to the ground
+        ctx.stroke();
+        ctx.setLineDash([]); // Reset to a solid line
       }
     }
   });

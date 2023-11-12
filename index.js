@@ -80,7 +80,6 @@
     isClicking = isMouseOver;
   });
   addEventListener("touchstart", (e) => {
-    e.preventDefault();
     if (isGameOver) return;
 
     isClicking = true;
@@ -93,7 +92,6 @@
     isClicking = false;
   });
   addEventListener("touchend", () => {
-    e.preventDefault();
     if (isGameOver) return;
 
     isClicking = false;
@@ -131,7 +129,6 @@
   });
   
   addEventListener("touchmove", (e) => {
-    e.preventDefault();
     if (isGameOver) return;
 
     const rect = canvas.getBoundingClientRect();
